@@ -1,2 +1,3 @@
 # bogu
+
 The Secret Scanner
