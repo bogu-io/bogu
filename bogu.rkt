@@ -7,11 +7,13 @@
 (define version (make-parameter #f))
 
 ; Strings
-(define version-slug "v0.0.1")
-(define naked-text (format "Bogu - ~a
+(define version-slug "v0.0.2")
+(define help-text (format "Bogu - ~a
 The Secret Scanner
 
 Use -h|--help for more details." version-slug))
+(define (scan-start-text scan-type)
+  (format "Starting ~a scan..." scan-type))
 (define wtf-text "Not sure what to do with arguments provided.\n\nUse -h|--help for more details.")
 
 ; Filenames to ignore
@@ -84,13 +86,15 @@ Use -h|--help for more details." version-slug))
 
 ; Local scan handler
 (define (local-scan path)
-  (displayln path)
+  (displayln (scan-start-text "local path"))
+  (cond [(verbose) (displayln path)])
   (recurse-through-files path)
-  (displayln scan-results))
+  (cond [(verbose) (displayln scan-results)]))
 
 (define (main args)
+  (displayln (string-append "Bogu " version-slug))
   (cond
-    [(= (vector-length args) 0) (displayln naked-text)]
+    [(= (vector-length args) 0) (displayln help-text)]
     [(> (string-length (local-path)) 0) (local-scan (local-path))]
     [(version) (displayln version-slug)]
     [else (displayln wtf-text)]))
