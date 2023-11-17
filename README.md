@@ -1,3 +1,9 @@
 # bogu
 
-The Secret Scanner
+The Secret Scanner.
+
+## Installation
+
+### Releases
+
+
