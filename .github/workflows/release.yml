@@ -34,4 +34,4 @@ jobs:
         with:
           artifacts: "bogu-*-linux-x64"
           generateReleaseNotes: true
-          tag: ${{ inputs.release_version }
+          tag: ${{ inputs.release_version }}
