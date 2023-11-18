@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release Tag'
+        required: true
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    permissions: write-all
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Racket
+        uses: Bogdanp/setup-racket@v1.10
+        with:
+          architecture: x64
+          distribution: full
+          variant: CS
+          version: current
+
+      - name: Build Executable
+        run: raco exe -o bogu-${{ inputs.release_version }}-linux-x64 bogu.rkt
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "bogu-*-linux-x64"
+          generateReleaseNotes: true
+          tag: ${{ inputs.release_version }
