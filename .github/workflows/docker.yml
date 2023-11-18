@@ -1,6 +1,6 @@
 name: Docker
 on:
-    tags: [ 'v*.*.*' ]
+  tags: [ 'v*.*.*' ]
 
 env:
   REGISTRY: ghcr.io
