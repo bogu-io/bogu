@@ -13,3 +13,4 @@
 (define aws-secret        #px"[A-Za-z0-9+/]{40}[^A-Za-z0-9+/]{0,1}")
 (define aws-session-id    #px"ASIA[0-9A-Z]{16}")
 (define aws-session-token #px"[A-Za-z0-9+=/]{41,1000}[^A-Za-z0-9+=/]{0,1}")
+(define gcp-api-key       #px"AIza[A-Za-z0-9_-]{35}")
