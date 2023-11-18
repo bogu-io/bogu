@@ -1,0 +1,35 @@
+on: 
+  - push
+workflow_dispatch:
+
+name: E2E Tests
+jobs:
+  e2e:
+    name: "Build on Racket '${{ matrix.racket-version }}' (${{ matrix.racket-variant }})"
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental || false }}
+    strategy:
+      fail-fast: false
+      matrix:
+        racket-version: ["stable", "current"]
+        racket-variant: ["BC", "CS"]
+        include:
+          - racket-version: current
+            experimental: true
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3.1.0
+
+      - name: Setup Racket
+        uses: Bogdanp/setup-racket@v1.9.1
+        with:
+          architecture: x64
+          distribution: full
+          variant: ${{ matrix.racket-variant }}
+          version: ${{ matrix.racket-version }}
+
+      - name: Build bogu
+        run: make bogu
+
+      - name: Run
+        run: ./bogu -vp mock
