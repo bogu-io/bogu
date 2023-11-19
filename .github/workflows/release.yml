@@ -33,6 +33,9 @@ jobs:
       - name: Build Executable
         run: raco exe -o bogu-${{ inputs.release_version }}-linux-x64 bogu.rkt
 
+      - name: Make bogu
+        run: make bogu
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
