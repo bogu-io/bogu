@@ -39,7 +39,7 @@ jobs:
       - name: Make bogu
         run: |
           make bogu
-          ls build/lib
+          ls build/lib/plt
 
       - name: Create Release
         uses: ncipollo/release-action@v1
