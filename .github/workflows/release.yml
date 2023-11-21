@@ -31,7 +31,7 @@ jobs:
           version: stable
 
       - name: Setup Raco
-        run: raco setup
+        run: sudo raco setup
       
       - name: Build Executable
         run: raco exe -o bogu-${{ inputs.release_version }}-linux-x64 bogu.rkt
