@@ -69,5 +69,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: bogu-io/bogu:${{ inputs.release_version }}
+          tags: ghcr.io/bogu-io/bogu:${{ inputs.release_version }}
           labels: ${{ steps.meta.outputs.labels }}
