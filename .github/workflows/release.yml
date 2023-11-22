@@ -42,7 +42,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "bogu-*-linux-x64"
+          artifacts: "bogu-*-linux-x64.zip"
           generateReleaseNotes: true
           tag: ${{ inputs.release_version }}
 
@@ -79,5 +79,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ inputs.release_version }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
