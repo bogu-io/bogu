@@ -6,3 +6,6 @@ compiled/
 \#*
 .\#*
 bogu
+build
+build-linux
+
