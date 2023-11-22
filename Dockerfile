@@ -1,6 +1,6 @@
 FROM ubuntu:latest
-WORKDIR /usr/local/bin
-COPY bogu .
+WORKDIR /bogu
+COPY build .
 # EXPOSE 8080
-ENTRYPOINT [ "bogu" ]
-CMD [ "-v" ]
+ENTRYPOINT [ "/bogu/bin/bogu" ]
+CMD [ "--version" ]

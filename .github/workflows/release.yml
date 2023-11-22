@@ -12,7 +12,9 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
 
-    permissions: write-all
+    permissions:
+      contents: write
+      packages: write
 
     steps:
       - name: Checkout code
@@ -24,14 +26,48 @@ jobs:
           architecture: x64
           distribution: full
           variant: CS
-          version: current
+          version: stable
 
-      - name: Build Executable
-        run: raco exe -o bogu-${{ inputs.release_version }}-linux-x64 bogu.rkt
+      - name: Setup Raco
+        run: sudo raco setup
+      
+      - name: Make build-linux-x64
+        run: BOGU_VERSION=${{ inputs.release_version }} make bogu-${{ inputs.release_version }}-linux-x64
+
+      - name: Make bogu
+        run: make bogu
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "bogu-*-linux-x64"
+          artifacts: "bogu-*-linux-x64.zip"
           generateReleaseNotes: true
           tag: ${{ inputs.release_version }}
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into ghcr.io
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+        with:
+          images: ghcr.io/${{ github.repository }}
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/bogu-io/bogu:${{ inputs.release_version }}
+          labels: ${{ steps.meta.outputs.labels }}
