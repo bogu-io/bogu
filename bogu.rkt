@@ -1,4 +1,3 @@
-
 #lang racket
 
 ;; bogu.rkt - main file
@@ -13,10 +12,9 @@
 
 (define (main args)
   (displayln (string-append "Bogu " version-slug))
-  (cond
-    [(= (vector-length args) 0) (displayln help-text)]
-    [(> (string-length (local-path)) 0) (local-scan (local-path))]
-    [(version) (displayln version-slug)]
-    [else (displayln wtf-text)]))
+  (cond [(= (vector-length args) 0) (displayln help-text)])
+  (cond [(> (string-length (local-path)) 0) (local-scan (local-path))])
+  (cond [(> (string-length (github-repo)) 0) (github-repo (github-repo))])
+  (cond [(version) (displayln version-slug)]))
 
 (main (current-command-line-arguments))

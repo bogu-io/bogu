@@ -17,7 +17,7 @@
 
 ; Command line parser
 (define parser
-  (command-line
+  (command-life
     #:usage-help
     "Bogu - The Secret Scanner"
     #:once-each
