@@ -10,7 +10,7 @@
 ;; import and implementation section
 
 ; Parameters
-(define github-repo (make-parameter ""))
+(define github-user (make-parameter ""))
 (define local-path (make-parameter ""))
 (define verbose (make-parameter #f))
 (define version (make-parameter #f))
@@ -22,7 +22,8 @@
     "Bogu - The Secret Scanner"
     #:once-each
     [("-p" "--path") PATH "Local scan path" (local-path PATH)]
-    [("-g" "--github-repo") REPO "GitHub Repo Scan" (github-repo REPO)]
+    [("--github-user") USER "GitHub Repo Scan by User" (github-user USER)]
     [("-v" "--verbose") "Verbose" (verbose #t)]
     #:once-any
     [("--version") "Version" (version #t)]))
+
