@@ -11,7 +11,7 @@
 
 (require
 	"parser.rkt"
-    "github.rkt"
+  "github.rkt"
 	"scanner.rkt"
 	"strings.rkt"
 	"walk.rkt")
