@@ -19,21 +19,27 @@
   (define uri (string-append "/users/" user "/repos"))
   (define repos '())
   (let loop ((url url))
-    (define-values (status response-body input-port)
+    (define-values (status response-headers input-port)
       (http-sendrecv host
                      uri
                      #:ssl? #t
                      #:method #"GET"
                      #:headers '()))
-    (define body (port->string input-port))
-    (display body)
+    (define headers response-headers)
+    (define header-pairs (map parse-header headers))
     (set! repos (append repos (read-json input-port)))
-    (close-input-port input-port)))
-    ;;(define next (get-paginated-url headers))
-    ;;(when next (loop next))) repos)
+    (close-input-port input-port)
+    (define next (get-paginated-url header-pairs))
+    (when next (loop next)))
+  repos)
+
+(define (parse-header header-bytes)
+  (let* ((header (bytes->string/utf-8 header-bytes))
+         (parts (string-split header ": ")))
+    (cons (first parts) (string-join (rest parts) ": "))))
 
 (define (get-paginated-url headers)
-  (define link-header (assoc headers "link"))
+  (define link-header (assoc "link" headers))
   (and link-header
        (regexp-match ".*<\\(.*?\\)>; rel=\"next\"" link-header)))
 

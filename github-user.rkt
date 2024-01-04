@@ -20,6 +20,7 @@
 (define (github-user-scan user)
   (displayln (scan-start-text "GitHub User"))
   (cond [(verbose) (displayln user)])
-  (get-all-repos user))
+  (define repos (get-all-repos user))
+  (displayln repos))
   ; (recurse-through-files path)
   ; (cond [(verbose) (displayln scan-results)]))
