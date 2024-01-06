@@ -9,15 +9,21 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
-(require json
+(require file/unzip
+         json
          net/http-client 
          net/url
-         net/head)
+         uuid)
+
+(define request-headers
+  `(("Accept" . "application/vnd.github+json")
+    ;("Authorization" . ,(string-append "Bearer " my-token))
+    ("X-GitHub-Api-Version" . "2022-11-28")))
 
 (define (get-all-repos user)
   (define host "api.github.com")
   (define uri (string-append "/users/" user "/repos"))
-  (let loop ((url url))
+  (let loop ([url uri])
     (define-values (status response-headers input-port)
       (http-sendrecv host
                      uri
@@ -26,11 +32,13 @@
                      #:headers '()))
     (define headers response-headers)
     (define header-pairs (map parse-header headers))
-    (define repo-hashes (read-json input-port))                                                       ; Repos are represented as a list of hashes.
+    ; Repos are represented as a list of hashes.
+    (define repo-hashes (read-json input-port))
     (get-repo-archive-urls repo-hashes)
     (close-input-port input-port)
     (define next (get-paginated-url header-pairs))
-    (when next (loop next))))
+    (when next (loop next)))
+  repo-archive-urls)
 
 (define (parse-header header-bytes)
   (let* ((header (bytes->string/utf-8 header-bytes))
@@ -42,21 +50,25 @@
   (and link-header
        (regexp-match ".*<\\(.*?\\)>; rel=\"next\"" link-header)))
 
-(define repo-archive-urls '())                                                                        ; Empty this after a GitHub scan.
+; Empty this after a GitHub scan.
+(define repo-archive-urls '())
 
 (define (get-repo-archive-urls repos)
   (when (not (null? repos))
     (define archive-url (hash-ref (first repos) 'archive_url))
+    (set! archive-url (string-replace archive-url "{archive_format}" "zipball"))
+    (set! archive-url (string-replace archive-url "{/ref}" ""))
     (set! repo-archive-urls (append repo-archive-urls (list archive-url)))
     (get-repo-archive-urls (rest repos))))
 
-; (define (download-repo-archive repo)
-;   (define out-file (string-append (car (string-split repo #\/)) ".zip"))
-;   (call-with-output-file out-file
-;                          (lambda (out)
-;                            (define in (get-pure-port (get-repo-archive-url repo)))
-;                            (copy-port in out)
-;                            (close-input-port in))
-;                          'binary)
-;   out-file)
-
+(define (download-repo-archive archive-url)
+  ; For downloading archives
+  (define response (get-pure-port (string->url archive-url) request-headers #:follow-redirects? #t))
+  ; Let's be fancy and name the zip and archive a uuid
+  (define temp-zip-path (format "~a.zip" (uuid-string)))
+  (define output-dir (format "~a" (uuid-string)))
+  (call-with-output-file temp-zip-path
+                         (lambda (out)
+                           (copy-port response out)))
+  (unzip temp-zip-path output-dir)
+  (delete-file temp-zip-path))
