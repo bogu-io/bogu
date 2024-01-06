@@ -27,6 +27,8 @@
     (when (not (null? archive-urls))
       (define archive-url (first archive-urls))
       (displayln archive-url)
+      (define archive-path (download-repo-archive archive-url))
+      (delete-archive archive-path)
       (loop (rest archive-urls))))
   (cond [(verbose) (displayln scan-results)]))
 

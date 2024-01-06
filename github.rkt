@@ -10,15 +10,16 @@
 ;; import and implementation section
 
 (require file/unzip
+         racket/file
          json
          net/http-client 
          net/url
          uuid)
 
 (define request-headers
-  `(("Accept" . "application/vnd.github+json")
-    ;("Authorization" . ,(string-append "Bearer " my-token))
-    ("X-GitHub-Api-Version" . "2022-11-28")))
+  '("Accept: application/vnd.github+json"
+    ; ("Authorization" (string-append "Bearer " my-token))
+    "X-GitHub-Api-Version: 2022-11-28"))
 
 (define (get-all-repos user)
   (define host "api.github.com")
@@ -63,12 +64,14 @@
 
 (define (download-repo-archive archive-url)
   ; For downloading archives
-  (define response (get-pure-port (string->url archive-url) request-headers #:follow-redirects? #t))
+  (define response (get-pure-port (string->url archive-url) request-headers #:redirections 1))
   ; Let's be fancy and name the zip and archive a uuid
   (define temp-zip-path (format "~a.zip" (uuid-string)))
   (define output-dir (format "~a" (uuid-string)))
   (call-with-output-file temp-zip-path
                          (lambda (out)
                            (copy-port response out)))
-  (unzip temp-zip-path output-dir)
-  (delete-file temp-zip-path))
+  (call-with-unzip temp-zip-path output-dir)
+  output-dir)
+
+  (define (delete-archive archive-path) (delete-file archive-path))
