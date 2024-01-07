@@ -66,12 +66,18 @@
   ; For downloading archives
   (define response (get-pure-port (string->url archive-url) request-headers #:redirections 1))
   ; Let's be fancy and name the zip and archive a uuid
-  (define temp-zip-path (format "~a.zip" (uuid-string)))
-  (define output-dir (format "~a" (uuid-string)))
+  (cond [(not (directory-exists? ".archives")) (make-directory ".archives")])
+  (define temp-zip-path (format ".archives/~a.zip" (uuid-string)))
+  (define output-dir (format ".archives/~a" (uuid-string)))
+  (make-directory output-dir)
   (call-with-output-file temp-zip-path
                          (lambda (out)
                            (copy-port response out)))
-  (call-with-unzip temp-zip-path output-dir)
+  (parameterize ([current-directory "."])
+    (unzip temp-zip-path
+           (make-filesystem-entry-reader #:dest output-dir)))
+  (delete-file temp-zip-path)
   output-dir)
 
-  (define (delete-archive archive-path) (delete-file archive-path))
+  (define (delete-archive archive-path)
+    (delete-directory/files archive-path))
