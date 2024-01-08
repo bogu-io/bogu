@@ -15,6 +15,11 @@
 ; Results
 (define scan-results (make-hash))
 
+; Empties a mutable hash
+(define (empty-hash the-hash)
+  (for ([key (hash-keys the-hash)])
+    (hash-remove! the-hash key)))
+
 (define (find-secrets path)
   (define matched-secrets (make-hash))
   (with-input-from-file path
