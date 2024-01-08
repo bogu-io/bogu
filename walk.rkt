@@ -25,7 +25,9 @@
         (recurse-through-files path-object-string)]
       [(file-exists? path-object)
         (printf "File: ~a\n" path-object-string)
+        ; https://github.com/bogu-io/bogu/issues/23
         (hash-set! scan-results path-object-string (find-secrets path-object-string))]
       [else
         (printf "Other: ~a\n" path-object-string)
+        ; https://github.com/bogu-io/bogu/issues/23
         (hash-set! scan-results path-object-string (find-secrets path-object-string))])))
