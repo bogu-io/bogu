@@ -14,12 +14,19 @@
          json
          net/http-client 
          net/url
-         uuid)
+         uuid
+         "parser.rkt")
 
-(define request-headers
-  '("Accept: application/vnd.github+json"
-    ; ("Authorization" (string-append "Bearer " my-token))
-    "X-GitHub-Api-Version: 2022-11-28"))
+(define (generate-headers)
+  (cond [(> (string-length (github-token)) 0)
+         (list
+          "Accept: application/vnd.github+json"
+          (string-append "Authorization: Bearer " (github-token))
+          "X-GitHub-Api-Version: 2022-11-28")]
+        [else
+          (list
+            "Accept: application/vnd.github+json"
+            "X-GitHub-Api-Version: 2022-11-28")]))
 
 (define (get-all-repos user)
   (define host "api.github.com")
@@ -30,7 +37,7 @@
                      uri
                      #:ssl? #t
                      #:method #"GET"
-                     #:headers '()))
+                     #:headers (generate-headers)))
     (define headers response-headers)
     (define header-pairs (map parse-header headers))
     ; Repos are represented as a list of hashes.
@@ -64,7 +71,7 @@
 
 (define (download-repo-archive archive-url)
   ; For downloading archives
-  (define response (get-pure-port (string->url archive-url) request-headers #:redirections 1))
+  (define response (get-pure-port (string->url archive-url) (generate-headers) #:redirections 1))
   ; Let's be fancy and name the zip and archive a uuid
   (cond [(not (directory-exists? ".archives")) (make-directory ".archives")])
   (define temp-zip-path (format ".archives/~a.zip" (uuid-string)))

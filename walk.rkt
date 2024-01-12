@@ -16,18 +16,22 @@
 ; Filesystem path walker
 (define (recurse-through-files path)
   (define path-objects (directory-list path #:build? #t))
-  (cond [(verbose) (printf "~a\n" path-objects)])
+  (cond [(debug) (printf "~a\n" path-objects)])
   (for ([path-object path-objects])
     (define path-object-string (path->string path-object))
     (cond
       [(directory-exists? path-object)
-        (printf "Entering directory: ~a\n" path-object)
+        (cond [(not (silent)) (printf "Entering directory: ~a\n" path-object)])
         (recurse-through-files path-object-string)]
       [(file-exists? path-object)
-        (printf "File: ~a\n" path-object-string)
-        ; https://github.com/bogu-io/bogu/issues/23
-        (hash-set! scan-results path-object-string (find-secrets path-object-string))]
+        (cond [(not (silent)) (printf "File: ~a\n" path-object-string)])
+        (define found-secrets (find-secrets path-object-string))
+        (cond
+          [(not (hash-empty? found-secrets))
+           (hash-set! scan-results path-object-string found-secrets)])]
       [else
-        (printf "Other: ~a\n" path-object-string)
-        ; https://github.com/bogu-io/bogu/issues/23
-        (hash-set! scan-results path-object-string (find-secrets path-object-string))])))
+        (cond [(not (silent)) (printf "Other: ~a\n" path-object-string)])
+        (define found-secrets (find-secrets path-object-string))
+        (cond
+          [(not (hash-empty? found-secrets))
+           (hash-set! scan-results path-object-string found-secrets)])])))
