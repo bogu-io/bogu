@@ -13,9 +13,6 @@
   "parser.rkt"
   "rules.rkt")
 
-; Results
-(define scan-results (make-hash))
-
 ; Empties a mutable hash
 (define (empty-hash the-hash)
   (for ([key (hash-keys the-hash)])
@@ -47,4 +44,4 @@
                 (cond [(not (silent)) (printf "Found GCP API Key: ~a\n" (car gcp-api-key-match))])
                 (hash-set! matched-secrets "gcp_api_key" (car gcp-api-key-match))]))) #:mode 'text)
     (cond [(not (silent)) (displayln "")])
-    (values matched-secrets))
+    matched-secrets)
