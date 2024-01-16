@@ -8,4 +8,5 @@ compiled/
 bogu
 build
 build-linux
+build-darwin
 .archives
