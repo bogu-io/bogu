@@ -11,7 +11,6 @@
 
 (require
 	"parser.rkt"
-	"scanner.rkt"
 	"strings.rkt"
 	"walk.rkt")
 
@@ -19,5 +18,6 @@
 (define (local-scan path)
   (displayln (scan-start-text "local path"))
   (cond [(verbose) (displayln path)])
-  (recurse-through-files path)
-  (cond [(verbose) (displayln scan-results)]))
+  (define scan-results (recurse-through-files path))
+  (cond [(debug) (displayln "[scan-results]")])
+  (cond [(debug) (displayln scan-results)]))

@@ -28,6 +28,9 @@ jobs:
           variant: ${{ matrix.racket-variant }}
           version: ${{ matrix.racket-version }}
 
+      - name: raco pkg install
+        run: raco pkg install uuid
+
       - name: Build bogu
         run: make bogu
 

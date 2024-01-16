@@ -14,18 +14,25 @@
   "scanner.rkt")
 
 ; Filesystem path walker
-(define (recurse-through-files path)
+(define (recurse-through-files path [local-scan-results (make-hash)])
   (define path-objects (directory-list path #:build? #t))
-  (cond [(verbose) (printf "~a\n" path-objects)])
+  (cond [(debug) (printf "[path-objects]\n~a\n" path-objects)])
   (for ([path-object path-objects])
     (define path-object-string (path->string path-object))
     (cond
       [(directory-exists? path-object)
-        (printf "Entering directory: ~a\n" path-object)
-        (recurse-through-files path-object-string)]
+        (cond [(not (silent)) (printf "Entering directory: ~a\n" path-object)])
+        (recurse-through-files path-object-string local-scan-results)]
       [(file-exists? path-object)
-        (printf "File: ~a\n" path-object-string)
-        (hash-set! scan-results path-object-string (find-secrets path-object-string))]
+        (cond [(not (silent)) (printf "File: ~a\n" path-object-string)])
+        (define found-secrets (find-secrets path-object-string))
+        (cond
+          [(not (hash-empty? found-secrets))
+           (hash-set! local-scan-results path-object-string found-secrets)])]
       [else
-        (printf "Other: ~a\n" path-object-string)
-        (hash-set! scan-results path-object-string (find-secrets path-object-string))])))
+        (cond [(not (silent)) (printf "Other: ~a\n" path-object-string)])
+        (define found-secrets (find-secrets path-object-string))
+        (cond
+          [(not (hash-empty? found-secrets))
+           (hash-set! local-scan-results path-object-string found-secrets)])]))
+    local-scan-results)

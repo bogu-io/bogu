@@ -1,3 +1,5 @@
+[![wakatime](https://wakatime.com/badge/github/bogu-io/bogu.svg)](https://wakatime.com/badge/github/bogu-io/bogu)
+
 # bogu
 
 The Secret Scanner.
