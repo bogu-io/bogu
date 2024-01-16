@@ -5,7 +5,7 @@ compiled/
 *.bak
 \#*
 .\#*
-bogu
+bogu-*-darwin-arm64
 build
 build-linux
 build-darwin
