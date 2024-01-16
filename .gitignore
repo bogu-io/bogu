@@ -6,6 +6,7 @@ compiled/
 \#*
 .\#*
 bogu-*-darwin-arm64
+bogu-*-linux-x64
 build
 build-linux
 build-darwin
