@@ -9,4 +9,5 @@ bogu
 build
 build-linux
 build-darwin
+*.zip
 .archives
