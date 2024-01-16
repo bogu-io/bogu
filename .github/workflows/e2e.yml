@@ -28,6 +28,9 @@ jobs:
           variant: ${{ matrix.racket-variant }}
           version: ${{ matrix.racket-version }}
 
+      - name: Setup Raco
+        run: sudo raco setup
+
       - name: raco pkg install
         run: raco pkg install uuid
 
