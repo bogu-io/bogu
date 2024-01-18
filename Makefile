@@ -38,6 +38,6 @@ bogu-linux-x64: bogu.rkt \
 
 clean:
 	rm bogu || true
-	rm bogu-* || true
+	rm -rf bogu-* || true
 	rm -rf build* || true
 
