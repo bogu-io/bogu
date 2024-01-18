@@ -5,9 +5,8 @@ compiled/
 *.bak
 \#*
 .\#*
+bogu
 bogu-*
 build
-build-linux
-build-darwin
 *.zip
 .archives
