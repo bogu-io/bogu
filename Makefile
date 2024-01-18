@@ -21,7 +21,7 @@ bogu-darwin-arm64: bogu.rkt \
 				   github-user.rkt
 	raco exe -o bogu bogu.rkt
 	raco distribute bogu-$(BOGU_VERSION) bogu
-	zip -r9 bogu-$(BOGU_VERSION)-darwin-arm64.zip bogu-$(BOGU_VERSION)
+	zip -r9 bogu-$(BOGU_VERSION)-darwin-arm64.zip bogu-$(BOGU_VERSION) scripts/darwin/install.sh
 
 bogu-linux-x64: bogu.rkt \
 				local.rkt \
@@ -34,7 +34,7 @@ bogu-linux-x64: bogu.rkt \
 				github-user.rkt
 	raco exe -o bogu bogu.rkt
 	raco distribute bogu-$(BOGU_VERSION) bogu
-	zip -r9 bogu-$(BOGU_VERSION)-linux-x64.zip bogu-$(BOGU_VERSION)
+	zip -r9 bogu-$(BOGU_VERSION)-linux-x64.zip bogu-$(BOGU_VERSION) scripts/linux/install.sh
 
 clean:
 	rm bogu || true
