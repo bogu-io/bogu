@@ -8,4 +8,4 @@ echo "export PATH=$PATH:/usr/local/bogu" >> $HOME/.zshrc
 source $HOME/.zshrc
 rm bogu-${VERSION}-darwin-arm64.zip
 echo "Installation complete!"
-bogu --version
+/usr/local/bogu/bin/bogu --version

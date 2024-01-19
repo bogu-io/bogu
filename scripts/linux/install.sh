@@ -8,4 +8,4 @@ echo "export PATH=$PATH:/usr/local/bogu" >> $HOME/.profile
 source $HOME/.profile
 rm bogu-${VERSION}-linux-x64.zip
 echo "Installation complete!"
-bogu --version
+/usr/local/bogu/bin/bogu --version
