@@ -36,7 +36,7 @@ bogu-linux-x64: bogu.rkt \
 	raco exe -o bogu bogu.rkt
 	raco distribute bogu-$(BOGU_VERSION) bogu
 	cp scripts/linux/install.sh install.sh
-	zip -r9 bogu-$(BOGU_VERSION)-linux-x64.zip bogu-$(BOGU_VERSION) scripts/linux/install.sh
+	zip -r9 bogu-$(BOGU_VERSION)-linux-x64.zip bogu-$(BOGU_VERSION) install.sh
 
 clean:
 	rm bogu || true
