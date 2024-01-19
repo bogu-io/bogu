@@ -35,7 +35,7 @@ jobs:
         run: raco pkg install uuid
       
       - name: Make build-linux-x64
-        run: BOGU_VERSION=${{ inputs.release_version }} make bogu-${{ inputs.release_version }}-linux-x64
+        run: BOGU_VERSION=${{ inputs.release_version }} make bogu-linux-x64
 
       - name: Make bogu
         run: make bogu
