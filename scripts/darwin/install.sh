@@ -4,7 +4,7 @@ echo "Beginning bogu installation..."
 echo "Move bogu to /usr/local..."
 mv bogu-${VERSION} /usr/local/bogu
 echo "Adding bogu to PATH..."
-echo "export PATH=$PATH:/usr/local/bogu" >> $HOME/.zshrc
+echo "export PATH=$PATH:/usr/local/bogu/bin" >> $HOME/.zshrc
 source $HOME/.zshrc
 rm bogu-${VERSION}-darwin-arm64.zip
 echo "Installation complete!"
