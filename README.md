@@ -19,6 +19,7 @@ Check out [previous](https://github.com/bogu-io/bogu/releases) releases.
 ## Scanning Environments
 
 - Local Path
+- GitHub
 
 ## Secret Detection
 
