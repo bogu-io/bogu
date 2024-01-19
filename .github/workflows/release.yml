@@ -37,9 +37,6 @@ jobs:
       - name: Make build-linux-x64
         run: BOGU_VERSION=${{ inputs.release_version }} make bogu-linux-x64
 
-      - name: Make bogu
-        run: make bogu
-
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
