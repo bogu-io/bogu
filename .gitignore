@@ -10,3 +10,4 @@ bogu-*
 build
 *.zip
 .archives
+install.sh
