@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-VERSION="0.0.3"
+VERSION="0.0.4"
 echo "Beginning bogu installation..."
 echo "Move bogu to /usr/local..."
 mv bogu-${VERSION} /usr/local/bogu
