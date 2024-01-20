@@ -6,9 +6,8 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     && rm -rf /var/lib/apt/lists/* \
-    && wget https://github.com/bogu-io/bogu/releases/download/0.0.5/bogu-0.0.5-linux-x64.zip \
-    && unzip bogu-0.0.5-linux-x64.zip \
-    && ./install.sh
+    && wget https://github.com/bogu-io/bogu/releases/download/0.0.6/bogu-0.0.6-linux-x64.zip \
+    && unzip bogu-0.0.6-linux-x64.zip
 # EXPOSE 8080
-ENTRYPOINT [ "/usr/local/bin/bogu/bin/bogu" ]
+ENTRYPOINT [ "bogu-0.0.6/bin/bogu" ]
 CMD [ "--version" ]
