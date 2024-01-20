@@ -11,3 +11,4 @@ build
 *.zip
 .archives
 install.sh
+scripts/
