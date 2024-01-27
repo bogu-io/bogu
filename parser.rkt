@@ -10,6 +10,7 @@
 ;; import and implementation section
 
 ; Parameters
+(define output-format (make-parameter "hash-list"))
 (define github-user (make-parameter ""))
 (define github-token (make-parameter ""))
 (define local-path (make-parameter ""))
@@ -30,6 +31,7 @@
     [("-v" "--verbose") "Verbose" (verbose #t)]
     [("-s" "--silent") "Silent" (silent #t)]
     [("-t" "--token") TOKEN "GitHub Token" (github-token TOKEN)]
+    [("-f" "--format") FORMAT "Output format" (output-format FORMAT)]
     #:once-any
     [("--version") "Version" (version #t)]))
 

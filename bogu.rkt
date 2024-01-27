@@ -19,4 +19,3 @@
   (cond [(version) (displayln version-slug)]))
 
 (main (current-command-line-arguments))
-
