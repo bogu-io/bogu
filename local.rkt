@@ -26,4 +26,5 @@
          (displayln local-scan-results)]
         [(equal? (output-format) "json")
          (printf "~a\n" (format-json local-scan-results))])
-  (reset-scan))
+  (reset-scan)
+  (values))
