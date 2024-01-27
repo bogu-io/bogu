@@ -47,7 +47,7 @@
                 (set! matched-secrets (append matched-secrets (list matched-secret)))])
           (cond [gcp-api-key-match
                 (cond [(not (silent)) (printf "Found GCP API Key: ~a\n" (car gcp-api-key-match))])
-                (hash-set! matched-secret 'gcp_api_key (car gcp-api-key-match)
-                (set! matched-secrets (append matched-secrets (list matched-secret))))]))) #:mode 'text)
+                (hash-set! matched-secret 'gcp_api_key (car gcp-api-key-match))
+                (set! matched-secrets (append matched-secrets (list matched-secret)))]))) #:mode 'text)
     (cond [(not (silent)) (displayln "")])
     matched-secrets)
