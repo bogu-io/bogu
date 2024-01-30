@@ -11,7 +11,8 @@
 
 (require
   "parser.rkt"
-  "scanner.rkt")
+  "scanner.rkt"
+  "utils.rkt")
 
 ; Holds the results of the scan
 (define local-scan-results '())
@@ -27,13 +28,21 @@
         (cond [(not (silent)) (printf "Entering directory: ~a\n" path-object)])
         (recurse-through-files path-object)]
       [(file-exists? path-object)
-        (cond [(not (silent)) (printf "File: ~a\n" path-object-string)])
-        (define found-secrets (find-secrets path-object-string))
+        (define found-secrets '())
         (define secrets-found (make-hasheq))
-        (hash-set! secrets-found 'path path-object-string)
-        (hash-set! secrets-found 'results found-secrets)
+        (cond [(not (silent)) (printf "File: ~a\n" path-object-string)])
+        (cond [(gcp-service-credentials-file? path-object-string)
+               (begin
+                 (cond [(not (silent)) (printf "Found GCP service credentials file: ~a\n" path-object-string)])
+                 (hash-set! secrets-found 'path path-object-string)
+                 (hash-set! secrets-found 'results (list (hasheq 'gcp_service_credentials_file path-object-string))))]
+              [else
+                (begin
+                  (set! found-secrets (find-secrets path-object-string))
+                  (hash-set! secrets-found 'path path-object-string)
+                  (hash-set! secrets-found 'results found-secrets))])
         (cond
-          [(not (empty? found-secrets))
+          [(not (empty? (hash-ref secrets-found 'results)))
            (set! local-scan-results (append local-scan-results (list secrets-found)))])]
       [else
         (cond [(not (silent)) (printf "Other: ~a\n" path-object-string)])

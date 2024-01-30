@@ -10,7 +10,7 @@
 ;; import and implementation section
 
 ; Parameters
-(define output-format (make-parameter "hash-list"))
+(define output-format (make-parameter ""))
 (define github-user (make-parameter ""))
 (define github-token (make-parameter ""))
 (define local-path (make-parameter ""))
