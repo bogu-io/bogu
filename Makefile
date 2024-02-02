@@ -6,8 +6,9 @@ bogu: bogu.rkt \
 	  strings.rkt \
 	  walk.rkt \
 	  github.rkt \
-	  github-user.rkt \
-	  utils.rkt
+	  github-api.rkt \
+	  utils.rkt \
+	  format.rkt
 	raco exe bogu.rkt
 	raco distribute build bogu
 
@@ -19,8 +20,9 @@ bogu-darwin-arm64: bogu.rkt \
 				   strings.rkt \
 				   walk.rkt \
 				   github.rkt \
-				   github-user.rkt \
-				   utils.rkt
+				   github-api.rkt \
+				   utils.rkt \
+	  			   format.rkt
 	raco exe -o bogu bogu.rkt
 	raco distribute bogu-$(BOGU_VERSION) bogu
 	# cp scripts/darwin/install.sh install.sh
@@ -34,8 +36,9 @@ bogu-linux-x64: bogu.rkt \
 				strings.rkt \
 				walk.rkt \
 				github.rkt \
-				github-user.rkt \
-				utils.rkt
+				github-api.rkt \
+				utils.rkt \
+	  			format.rkt
 	raco exe -o bogu bogu.rkt
 	raco distribute bogu-$(BOGU_VERSION) bogu
 	# cp scripts/linux/install.sh install.sh
