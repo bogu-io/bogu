@@ -12,5 +12,4 @@
 (require json)
 
 (define (format-json hashes)
-  (write-json hashes)
-  (values))
+  (values (write-json hashes)))
