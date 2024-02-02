@@ -11,7 +11,7 @@
 
 ; Parameters
 (define output-format (make-parameter ""))
-(define github-user (make-parameter ""))
+(define github-owner (make-parameter ""))
 (define github-token (make-parameter ""))
 (define local-path (make-parameter ""))
 (define silent (make-parameter #f))
@@ -26,7 +26,7 @@
     "Bogu - The Secret Scanner"
     #:once-each
     [("-p" "--path") PATH "Local scan path" (local-path PATH)]
-    [("--github-user") USER "GitHub Repo Scan by User" (github-user USER)]
+    [("--github-owner") OWNER "GitHub Repo Scan by Owner" (github-owner OWNER)]
     [("-d" "--debug") "Debug" (debug #t)]
     [("-v" "--verbose") "Verbose" (verbose #t)]
     [("-s" "--silent") "Silent" (silent #t)]

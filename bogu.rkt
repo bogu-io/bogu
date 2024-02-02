@@ -7,7 +7,7 @@
 
 (require
   "local.rkt"
-  "github-user.rkt"
+  "github.rkt"
   "parser.rkt"
   "strings.rkt")
 
@@ -15,7 +15,7 @@
   (displayln (string-append "Bogu " version-slug))
   (cond [(= (vector-length args) 0) (displayln help-text)])
   (cond [(> (string-length (local-path)) 0) (local-scan (local-path))])
-  (cond [(> (string-length (github-user)) 0) (github-user-scan (github-user))])
+  (cond [(> (string-length (github-owner)) 0) (github-scan (github-owner))])
   (cond [(version) (displayln version-slug)])
   (values))
 

@@ -1,6 +1,6 @@
 #lang racket
 
-;; github.rkt - GitHub API utility functions
+;; github.rkt - GitHub User handler.
 
 ;; Ask and I shall provide
 (provide
@@ -9,82 +9,43 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
-(require file/unzip
-         racket/file
-         json
-         net/http-client 
-         net/url
-         uuid
-         "parser.rkt")
+(require
+	"parser.rkt"
+  "github-api.rkt"
+	"strings.rkt"
+	"walk.rkt"
+  "format.rkt")
 
-(define (generate-headers)
-  (cond [(> (string-length (github-token)) 0)
-         (list
-          "Accept: application/vnd.github+json"
-          (string-append "Authorization: Bearer " (github-token))
-          "X-GitHub-Api-Version: 2022-11-28")]
-        [else
-          (list
-            "Accept: application/vnd.github+json"
-            "X-GitHub-Api-Version: 2022-11-28")]))
+(define github-results '())
 
-(define (get-all-repos user)
-  (define host "api.github.com")
-  (define uri (string-append "/users/" user "/repos"))
-  (let loop ([url uri])
-    (define-values (status response-headers input-port)
-      (http-sendrecv host
-                     uri
-                     #:ssl? #t
-                     #:method #"GET"
-                     #:headers (generate-headers)))
-    (define headers response-headers)
-    (define header-pairs (map parse-header headers))
-    ; Repos are represented as a list of hashes.
-    (define repo-hashes (read-json input-port))
-    (get-repo-archive-urls repo-hashes)
-    (close-input-port input-port)
-    (define next (get-paginated-url header-pairs))
-    (when next (loop next)))
-  repo-archive-urls)
+; GitHub Repo scan handler
+(define (github-scan user)
+  (displayln (scan-start-text "GitHub User"))
+  (cond [(verbose) (displayln user)])
+  (define-values (repos) (get-all-repos user))
+  (cond [(debug) (displayln repos)])
+  (let loop ([archive-urls repos])
+    (when (not (null? archive-urls))
+      (define repo-results (make-hasheq))
+      (define archive-url (first archive-urls))
+      (define archive-path (download-repo-archive archive-url))
+      (define repo-name (string-replace archive-url "https://api.github.com/repos/" ""))
+      (set! repo-name (string-replace repo-name "/zipball" ""))
+      (hash-set! repo-results 'repo_name repo-name)
+      (recurse-through-files archive-path)
+      (cond [(debug) (displayln "[local-scan-results]")])
+      (cond [(debug) (displayln local-scan-results)])
+      (cond
+        [(not (empty? local-scan-results))
+         (hash-set! repo-results 'repo_results local-scan-results)])
+      (set! github-results (append github-results (list repo-results)))
+      (delete-archive archive-path)
+      (reset-scan)
+      (loop (rest archive-urls))))
+  (cond [(debug) (displayln "[github-results]")])
+  (cond [(debug) (displayln github-results)])
+  (cond [(equal? (output-format) "hash-list")
+         (displayln github-results)]
+        [(equal? (output-format) "json")
+         (printf "~a\n" (format-json github-results))]))
 
-(define (parse-header header-bytes)
-  (let* ((header (bytes->string/utf-8 header-bytes))
-         (parts (string-split header ": ")))
-    (cons (first parts) (string-join (rest parts) ": "))))
-
-(define (get-paginated-url headers)
-  (define link-header (assoc "link" headers))
-  (and link-header
-       (regexp-match ".*<\\(.*?\\)>; rel=\"next\"" link-header)))
-
-; Empty this after a GitHub scan.
-(define repo-archive-urls '())
-
-(define (get-repo-archive-urls repos)
-  (when (not (null? repos))
-    (define archive-url (hash-ref (first repos) 'archive_url))
-    (set! archive-url (string-replace archive-url "{archive_format}" "zipball"))
-    (set! archive-url (string-replace archive-url "{/ref}" ""))
-    (set! repo-archive-urls (append repo-archive-urls (list archive-url)))
-    (get-repo-archive-urls (rest repos))))
-
-(define (download-repo-archive archive-url)
-  ; For downloading archives
-  (define response (get-pure-port (string->url archive-url) (generate-headers) #:redirections 1))
-  ; Let's be fancy and name the zip and archive a uuid
-  (cond [(not (directory-exists? ".archives")) (make-directory ".archives")])
-  (define temp-zip-path (format ".archives/~a.zip" (uuid-string)))
-  (define output-dir (format ".archives/~a" (uuid-string)))
-  (make-directory output-dir)
-  (call-with-output-file temp-zip-path
-                         (lambda (out)
-                           (copy-port response out)))
-  (parameterize ([current-directory "."])
-    (unzip temp-zip-path
-           (make-filesystem-entry-reader #:dest output-dir)))
-  (delete-file temp-zip-path)
-  output-dir)
-
-  (define (delete-archive archive-path)
-    (delete-directory/files archive-path))
