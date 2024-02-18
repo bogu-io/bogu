@@ -4,10 +4,7 @@
 
 ;; Ask and I shall provide
 (provide
-  version-slug
-  help-text
-  scan-start-text
-  wtf-text)
+  all-defined-out)
 
 ;; —————————————————————————————————
 ;; import and implementation section
