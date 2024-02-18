@@ -4,7 +4,7 @@
 
 ;; Ask and I shall provide
 (provide
-  all-defined-out)
+  (all-defined-out))
 
 ;; —————————————————————————————————
 ;; import and implementation section

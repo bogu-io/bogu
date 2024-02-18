@@ -12,7 +12,7 @@
 (require
 	"parser.rkt"
   "github-api.rkt"
-	"strings.rkt"
+  "strings.rkt"
 	"walk.rkt"
   "format.rkt")
 
