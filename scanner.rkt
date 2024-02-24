@@ -38,8 +38,9 @@
           (cond [aws-secret-match
                 (cond [(not (silent)) (printf "Found AWS Access Secret: ~a\n" (car aws-secret-match))])
                 (define shannon-score (shannon (car aws-secret-match)))
-                (hash-set! matched-secret 'aws_secret (car aws-secret-match))
-                (set! matched-secrets (append matched-secrets (list matched-secret)))])
+                (cond [(> shannon-score 4) (begin
+                  (hash-set! matched-secret 'aws_secret (car aws-secret-match))
+                  (set! matched-secrets (append matched-secrets (list matched-secret))))])])
           (cond [aws-session-id-match
                 (cond [(not (silent)) (printf "Found AWS Session ID: ~a\n" (car aws-session-id-match))])
                 (define shannon-score (shannon (car aws-session-id-match)))
@@ -48,12 +49,14 @@
           (cond [aws-session-token-match
                 (cond [(not (silent)) (printf "Found AWS Session Token: ~a\n" (car aws-session-token-match))])
                 (define shannon-score (shannon (car aws-session-token-match)))
-                (hash-set! matched-secret 'aws_session_token (car aws-session-token-match))
-                (set! matched-secrets (append matched-secrets (list matched-secret)))])
+                (cond [(> shannon-score 4) (begin
+                  (hash-set! matched-secret 'aws_session_token (car aws-session-token-match))
+                  (set! matched-secrets (append matched-secrets (list matched-secret))))])])
           (cond [gcp-api-key-match
                 (cond [(not (silent)) (printf "Found GCP API Key: ~a\n" (car gcp-api-key-match))])
                 (define shannon-score (shannon (car gcp-api-key-match)))
-                (hash-set! matched-secret 'gcp_api_key (car gcp-api-key-match))
-                (set! matched-secrets (append matched-secrets (list matched-secret)))]))) #:mode 'text)
+                (cond [(> shannon-score 4) (begin
+                  (hash-set! matched-secret 'gcp_api_key (car gcp-api-key-match))
+                  (set! matched-secrets (append matched-secrets (list matched-secret))))])]))) #:mode 'text) 
     (cond [(not (silent)) (displayln "")])
     matched-secrets)
