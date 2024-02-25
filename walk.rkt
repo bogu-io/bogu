@@ -20,7 +20,7 @@
 ; Filesystem path walker
 (define (recurse-through-files path)
   (define path-objects (directory-list path #:build? #t))
-  (cond [(debug) (printf "[path-objects]\n~a\n" path-objects)])
+  ; (cond [(debug) (printf "[path-objects]\n~a\n" path-objects)])
   (for ([path-object path-objects])
     (define path-object-string (path->string path-object))
     (cond
