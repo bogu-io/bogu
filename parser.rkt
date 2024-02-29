@@ -10,12 +10,13 @@
 ;; import and implementation section
 
 ; Parameters
-(define output-format (make-parameter ""))
+(define debug (make-parameter #f))
 (define github-owner (make-parameter ""))
 (define github-token (make-parameter ""))
 (define local-path (make-parameter ""))
+(define output-format (make-parameter ""))
 (define silent (make-parameter #f))
-(define debug (make-parameter #f))
+(define symlink (make-parameter #f))
 (define verbose (make-parameter #f))
 (define version (make-parameter #f))
 
@@ -33,5 +34,6 @@
     [("-t" "--token") TOKEN "GitHub Token" (github-token TOKEN)]
     [("-f" "--format") FORMAT "Output format" (output-format FORMAT)]
     #:once-any
-    [("--version") "Version" (version #t)]))
+    [("--version") "Version" (version #t)]
+    [("--symlink") "Create symbolic link in /usr/local/bin" (symlink #t)]))
 

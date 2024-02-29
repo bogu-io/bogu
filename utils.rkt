@@ -35,3 +35,11 @@
     (set! entropy (+ entropy term)))
   (set! entropy (- 0 entropy))
   entropy)
+
+(define (symbolic-link)
+  (cond [(file-exists? "/usr/local/bin/bogu")
+         (delete-file "/usr/local/bin/bogu")])
+  (define pwd (path->string (current-directory)))
+  (define destination "/usr/local/bin/bogu")
+  (make-file-or-directory-link (string-append pwd "bogu") destination)
+  (displayln "Symbolic link created in /usr/local/bin"))
