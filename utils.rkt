@@ -42,5 +42,4 @@
   (define pwd (path->string (current-directory)))
   (define destination "/usr/local/bin/bogu")
   (make-file-or-directory-link (string-append pwd "bogu") destination)
-  (displayln "Symbolic link created in /usr/local/bin")
-)
+  (displayln "Symbolic link created in /usr/local/bin"))
