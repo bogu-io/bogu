@@ -13,13 +13,18 @@
 (define (gcp-service-credentials-file? file-path)
   (define file-contents (call-with-input-file file-path port->string))
   (cond
-    [(and 
-      (string-contains? file-contents "\"type\": \"service_account\"")
+    [(and
+      (string-contains? file-contents "type")
       (string-contains? file-contents "project_id")
       (string-contains? file-contents "private_key_id")
       (string-contains? file-contents "private_key")
       (string-contains? file-contents "client_email")
-      (string-contains? file-contents "client_id")) #t]
+      (string-contains? file-contents "client_id")
+      (string-contains? file-contents "auth_uri")
+      (string-contains? file-contents "token_uri")
+      (string-contains? file-contents "auth_provider_x509_cert_url")
+      (string-contains? file-contents "client_x509_cert_url")
+      (string-contains? file-contents "universe_domain")) #t]
     [else #f]))
 
 ;; Check if we have gcp oauth file
