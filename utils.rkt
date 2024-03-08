@@ -22,6 +22,19 @@
       (string-contains? file-contents "client_id")) #t]
     [else #f]))
 
+;; Check if we have gcp oauth file
+(define (gcp-oauth-file? file-path)
+  (define file-contents (call-with-input-file file-path port->string))
+  (cond
+    [(and 
+      (string-contains? file-contents "project_id")
+      (string-contains? file-contents "auth_uri")
+      (string-contains? file-contents "token_uri")
+      (string-contains? file-contents "auth_provider_x509_cert_url")
+      (string-contains? file-contents "client_secret")
+      (string-contains? file-contents "client_id")) #t]
+    [else #f]))
+
 ;; Checks Shannon entropy of a string
 (define (shannon str)
   (define len (string-length str))
