@@ -36,12 +36,7 @@
                  (cond [(not (silent)) (printf "Found GCP service credentials file: ~a\n" path-object-string)])
                  (hash-set! secrets-found 'path path-object-string)
                  (hash-set! secrets-found 'results (list (hasheq 'gcp_service_credentials_file path-object-string))))]
-              [else
-                (begin
-                  (set! found-secrets (find-secrets path-object-string))
-                  (hash-set! secrets-found 'path path-object-string)
-                  (hash-set! secrets-found 'results found-secrets))])
-        (cond [(gcp-oauth-file? path-object-string)
+              [(gcp-oauth-file? path-object-string)
                (begin
                  (cond [(not (silent)) (printf "Found GCP OAuth file: ~a\n" path-object-string)])
                  (hash-set! secrets-found 'path path-object-string)
