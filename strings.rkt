@@ -9,7 +9,7 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
-(define version-slug "v0.0.12")
+(define version-slug "v0.0.13")
 
 (define help-text (format "Bogu - ~a
 The Secret Scanner
