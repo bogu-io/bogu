@@ -35,17 +35,20 @@
                (begin
                  (cond [(not (silent)) (printf "Found GCP service credentials file: ~a\n" path-object-string)])
                  (hash-set! secrets-found 'path path-object-string)
-                 (hash-set! secrets-found 'results (list (hasheq 'gcp_service_credentials_file path-object-string))))]
+                 (hash-set! secrets-found 'results (list (hasheq 'gcp_service_credentials_file path-object-string)))
+                 (hash-set! secrets-found 'count (length (hash-ref secrets-found 'results))))]
               [(gcp-oauth-file? path-object-string)
                (begin
                  (cond [(not (silent)) (printf "Found GCP OAuth file: ~a\n" path-object-string)])
                  (hash-set! secrets-found 'path path-object-string)
-                 (hash-set! secrets-found 'results (list (hasheq 'gcp_oauth_file path-object-string))))]
+                 (hash-set! secrets-found 'results (list (hasheq 'gcp_oauth_file path-object-string)))
+                 (hash-set! secrets-found 'count (length (hash-ref secrets-found 'results))))]
               [else
                 (begin
                   (set! found-secrets (find-secrets path-object-string))
                   (hash-set! secrets-found 'path path-object-string)
-                  (hash-set! secrets-found 'results found-secrets))])
+                  (hash-set! secrets-found 'results found-secrets)
+                  (hash-set! secrets-found 'count (length (hash-ref secrets-found 'results))))])
         (cond
           [(not (empty? (hash-ref secrets-found 'results)))
            (set! local-scan-results (append local-scan-results (list secrets-found)))])]
@@ -55,6 +58,7 @@
         (define secrets-found (make-hasheq))
         (hash-set! secrets-found 'path path-object-string)
         (hash-set! secrets-found 'results found-secrets)
+        (hash-set! secrets-found 'count (length (hash-ref secrets-found 'results)))
         (cond
           [(not (empty? found-secrets))
            (set! local-scan-results (append local-scan-results (list secrets-found)))])])))
