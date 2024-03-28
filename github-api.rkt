@@ -70,21 +70,25 @@
     (get-repo-archive-urls (rest repos))))
 
 (define (download-repo-archive archive-url)
-  ; For downloading archives
-  (define response (get-pure-port (string->url archive-url) (generate-headers) #:redirections 1))
-  ; Let's be fancy and name the zip and archive a uuid
-  (cond [(not (directory-exists? ".archives")) (make-directory ".archives")])
-  (define temp-zip-path (format ".archives/~a.zip" (uuid-string)))
-  (define output-dir (format ".archives/~a" (uuid-string)))
-  (make-directory output-dir)
-  (call-with-output-file temp-zip-path
-                         (lambda (out)
-                           (copy-port response out)))
-  (parameterize ([current-directory "."])
-    (unzip temp-zip-path
-           (make-filesystem-entry-reader #:dest output-dir)))
-  (delete-file temp-zip-path)
-  output-dir)
+  (with-handlers ([exn:fail?
+                   (lambda (e)
+                     (printf "Caught an error: ~a\n" (exn-message e))
+                     #f)])
+    ; For downloading archives
+    (define response (get-pure-port (string->url archive-url) (generate-headers) #:redirections 1))
+    ; Let's be fancy and name the zip and archive a uuid
+    (cond [(not (directory-exists? ".archives")) (make-directory ".archives")])
+    (define temp-zip-path (format ".archives/~a.zip" (uuid-string)))
+    (define output-dir (format ".archives/~a" (uuid-string)))
+    (make-directory output-dir)
+    (call-with-output-file temp-zip-path
+                          (lambda (out)
+                            (copy-port response out)))
+    (parameterize ([current-directory "."])
+      (unzip temp-zip-path
+            (make-filesystem-entry-reader #:dest output-dir)))
+    (delete-file temp-zip-path)
+    output-dir))
 
   (define (delete-archive archive-path)
     (delete-directory/files archive-path))
