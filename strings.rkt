@@ -20,3 +20,4 @@ Use -h|--help for more details." version-slug))
   (format "\nStarting ~a scan...\n" scan-type))
 
 (define wtf-text "Not sure what to do with arguments provided.\n\nUse -h|--help for more details.")
+
