@@ -9,7 +9,7 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
-(define version-slug "v0.0.14")
+(define version-slug "v0.0.15")
 
 (define help-text (format "Bogu - ~a
 The Secret Scanner
@@ -20,3 +20,4 @@ Use -h|--help for more details." version-slug))
   (format "\nStarting ~a scan...\n" scan-type))
 
 (define wtf-text "Not sure what to do with arguments provided.\n\nUse -h|--help for more details.")
+

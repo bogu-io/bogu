@@ -19,7 +19,8 @@ Check out [previous](https://github.com/bogu-io/bogu/releases) releases.
 ## Scanning Environments
 
 - Local Path
-- GitHub
+- GitHub Organization
+- GitHub User
 
 ## Secret Detection
 
@@ -27,6 +28,7 @@ Check out [previous](https://github.com/bogu-io/bogu/releases) releases.
 - AWS Secret Access Key
 - GCP API Key
 - GCP Service Account Credentials
+- Lumos API Key
 
 ## Tested On
 

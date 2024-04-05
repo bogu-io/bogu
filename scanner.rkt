@@ -30,6 +30,7 @@
           (define aws-session-id-match (regexp-match aws-session-id line))
           (define aws-session-token-match (regexp-match aws-session-token line))
           (define gcp-api-key-match (regexp-match gcp-api-key line))
+          (define lumos-api-key-match (regexp-match lumos-api-key line))
           (cond [aws-id-match
                 (cond [(not (silent)) (printf "Found AWS Access ID: ~a\n" (car aws-id-match))])
                 (define shannon-score (shannon (car aws-id-match)))
@@ -44,11 +45,11 @@
                   (hash-set! matched-secret 'aws_secret (car aws-secret-match))
                   (set! matched-secrets (append matched-secrets (list matched-secret))))])])
           (cond [aws-session-id-match
-                (cond [(not (silent)) (printf "Found AWS Session ID: ~a\n" (car aws-session-id-match))])
-                (define shannon-score (shannon (car aws-session-id-match)))
-                (cond [(debug) (printf "Entropy score: ~a\n" shannon-score)])
-                (hash-set! matched-secret 'aws_session_id (car aws-session-id-match))
-                (set! matched-secrets (append matched-secrets (list matched-secret)))])
+                  (cond [(not (silent)) (printf "Found AWS Session ID: ~a\n" (car aws-session-id-match))])
+                  (define shannon-score (shannon (car aws-session-id-match)))
+                  (cond [(debug) (printf "Entropy score: ~a\n" shannon-score)])
+                  (hash-set! matched-secret 'aws_session_id (car aws-session-id-match))
+                  (set! matched-secrets (append matched-secrets (list matched-secret)))])
           (cond [aws-session-token-match
                 (define shannon-score (shannon (car aws-session-token-match)))
                 (cond [(and (> shannon-score 4.6) (< shannon-score 5.9)) (begin
@@ -62,6 +63,10 @@
                   (cond [(not (silent)) (printf "Found GCP API Key: ~a\n" (car gcp-api-key-match))])
                   (cond [(debug) (printf "Entropy score: ~a\n" shannon-score)])
                   (hash-set! matched-secret 'gcp_api_key (car gcp-api-key-match))
-                  (set! matched-secrets (append matched-secrets (list matched-secret))))])]))) #:mode 'text) 
+                  (set! matched-secrets (append matched-secrets (list matched-secret))))])])
+          (cond [lumos-api-key-match
+                  (cond [(not (silent)) (printf "Found Lumos API Key: ~a\n" (car lumos-api-key-match))])
+                  (hash-set! matched-secret 'lumos_api_key (car lumos-api-key-match))
+                  (set! matched-secrets (append matched-secrets (list matched-secret)))]))) #:mode 'text) 
     (cond [(not (silent)) (displayln "")])
     matched-secrets)
