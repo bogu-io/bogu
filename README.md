@@ -27,6 +27,7 @@ Check out [previous](https://github.com/bogu-io/bogu/releases) releases.
 - AWS Secret Access Key
 - GCP API Key
 - GCP Service Account Credentials
+- Lumos API Key
 
 ## Tested On
 
