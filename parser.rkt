@@ -29,7 +29,7 @@
     #:once-each
     [("-p" "--path") PATH "Local scan path" (local-path PATH)]
     [("--github-owner") OWNER "GitHub Repo Scan by Owner" (github-owner OWNER)]
-    [("--ignore-path") FILE ".boguignore file path" (ignore-path FILE)]
+    [("-i" "--ignore-path") FILE ".boguignore file path" (ignore-path FILE)]
     [("-d" "--debug") "Debug" (debug #t)]
     [("-v" "--verbose") "Verbose" (verbose #t)]
     [("-s" "--silent") "Silent" (silent #t)]
