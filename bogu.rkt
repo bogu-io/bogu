@@ -13,6 +13,7 @@
   "utils.rkt")
 
 (define (main args)
+  (create-bogu-files)
   (displayln (string-append "Bogu " version-slug))
   (cond [(= (vector-length args) 0) (displayln help-text)])
   (cond [(> (string-length (local-path)) 0) (local-scan (local-path))])

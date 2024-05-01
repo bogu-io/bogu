@@ -9,18 +9,22 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
+(require
+  "utils.rkt")
+
 (define (read-ignore-patterns file-path)
-  (with-input-from-file file-path
-    (lambda ()
-      (filter (lambda (line) (not (empty? line)))
-              (file->lines)))))
+  (define file-path-resolved (simplify-path (expand-home-path file-path)))
+  (cond [(file-exists? file-path-resolved)
+         (with-input-from-file file-path-resolved
+           (lambda ()
+             (filter (lambda (line) (not (empty? line)))
+                     (file->lines file-path-resolved))))]))
 
 ; Function to check if a path should be ignored
 (define (should-ignore? path patterns)
-  (ormap (lambda (pattern)
-           (regexp-match pattern path))
-         patterns))
+  (for/or ([pattern patterns])
+    (regexp-match? pattern path)))
 
 ; Example usage:
-(define patterns (read-ignore-patterns "path/to/.gitignore-like"))
-(should-ignore? "example.log" patterns)  ; Usage with loaded patterns
+; (define patterns (read-ignore-patterns "path/to/.gitignore-like"))
+; (should-ignore? "example.log" patterns)  ; Usage with loaded patterns
