@@ -14,7 +14,7 @@
   rackunit)
 
 ;; Test for `version-slug`
-(check-equal? version-slug "v0.0.15")
+(check-equal? version-slug "v0.0.16")
 
 ;; Test for `scan-start-text`
 (check-equal? (scan-start-text "test") "\nStarting test scan...\n")

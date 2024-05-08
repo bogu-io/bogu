@@ -9,6 +9,17 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
+(define (create-bogu-files)
+  (define path (build-path (find-system-path 'home-dir) ".bogu" "boguignore"))
+  (unless (file-exists? path)
+    (make-directory* (path-only path))
+    (call-with-output-file path void)))
+
+(define (expand-home-path path)
+  (if (string-prefix? path "~")
+      (string-replace path "~" (path->string (find-system-path 'home-dir)))
+      path))
+
 ;; Check if we have gcp service credentials file
 (define (gcp-service-credentials-file? file-path)
   (define file-contents (call-with-input-file file-path port->string))

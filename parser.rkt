@@ -9,10 +9,14 @@
 ;; —————————————————————————————————
 ;; import and implementation section
 
+(require
+  "utils.rkt")
+
 ; Parameters
 (define debug (make-parameter #f))
 (define github-owner (make-parameter ""))
 (define github-token (make-parameter ""))
+(define ignore-path (make-parameter "~/.bogu/boguignore"))
 (define local-path (make-parameter ""))
 (define output-format (make-parameter ""))
 (define silent (make-parameter #f))
@@ -28,6 +32,7 @@
     #:once-each
     [("-p" "--path") PATH "Local scan path" (local-path PATH)]
     [("--github-owner") OWNER "GitHub Repo Scan by Owner" (github-owner OWNER)]
+    [("-i" "--ignore-path") FILE ".boguignore file path" (ignore-path FILE)]
     [("-d" "--debug") "Debug" (debug #t)]
     [("-v" "--verbose") "Verbose" (verbose #t)]
     [("-s" "--silent") "Silent" (silent #t)]
