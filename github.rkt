@@ -43,7 +43,6 @@
               [(not (empty? local-scan-results))
               (hash-set! repo-results 'repo_results local-scan-results)])
             (set! github-results (append github-results (list repo-results)))
-            (displayln archive-path)
             (delete-archive archive-path)
             (reset-scan)
             (loop (rest archive-urls))))))
