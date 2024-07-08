@@ -14,7 +14,8 @@
   "github-api.rkt"
   "strings.rkt"
 	"walk.rkt"
-  "format.rkt")
+  "format.rkt"
+  "utils.rkt")
 
 (define github-results '())
 
@@ -50,5 +51,7 @@
   (cond [(equal? (output-format) "hash-list")
          (displayln github-results)]
         [(equal? (output-format) "json")
-         (printf "~a\n" (format-json github-results))]))
+         (printf "~a\n" (format-json github-results))])
+  (delete-directory/files (string-append (path->string (get-bogu-dir-path)) "/archives")))
+  
 

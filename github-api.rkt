@@ -15,7 +15,8 @@
          net/http-client 
          net/url
          uuid
-         "parser.rkt")
+         "parser.rkt"
+         "utils.rkt")
 
 (define (generate-headers)
   (cond [(> (string-length (github-token)) 0)
@@ -76,10 +77,11 @@
                      #f)])
     ; For downloading archives
     (define response (get-pure-port (string->url archive-url) (generate-headers) #:redirections 1))
+    (define archives-path (string-append (path->string (get-bogu-dir-path)) "/archives"))
     ; Let's be fancy and name the zip and archive a uuid
-    (cond [(not (directory-exists? ".archives")) (make-directory ".archives")])
-    (define temp-zip-path (format ".archives/~a.zip" (uuid-string)))
-    (define output-dir (format ".archives/~a" (uuid-string)))
+    (cond [(not (directory-exists? archives-path)) (make-directory archives-path)])
+    (define temp-zip-path (format "~a/~a.zip" archives-path (uuid-string)))
+    (define output-dir (format "~a/~a" archives-path (uuid-string)))
     (make-directory output-dir)
     (call-with-output-file temp-zip-path
                           (lambda (out)

@@ -1,4 +1,4 @@
-[![wakatime](https://wakatime.com/badge/github/bogu-io/bogu.svg)](https://wakatime.com/badge/github/bogu-io/bogu)
+![GitHub Release](https://img.shields.io/github/v/release/bogu-io/bogu) [![wakatime](https://wakatime.com/badge/github/bogu-io/bogu.svg)](https://wakatime.com/badge/github/bogu-io/bogu)
 
 # bogu
 
