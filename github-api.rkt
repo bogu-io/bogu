@@ -77,7 +77,7 @@
                      #f)])
     ; For downloading archives
     (define response (get-pure-port (string->url archive-url) (generate-headers) #:redirections 1))
-    (define archives-path (string-append (get-bogu-dir-path) "/archives"))
+    (define archives-path (string-append (path->string (get-bogu-dir-path)) "/archives"))
     ; Let's be fancy and name the zip and archive a uuid
     (cond [(not (directory-exists? archives-path)) (make-directory archives-path)])
     (define temp-zip-path (format "~a/~a.zip" archives-path (uuid-string)))

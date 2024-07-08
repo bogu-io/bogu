@@ -14,7 +14,8 @@
   "github-api.rkt"
   "strings.rkt"
 	"walk.rkt"
-  "format.rkt")
+  "format.rkt"
+  "utils.rkt")
 
 (define github-results '())
 
@@ -42,6 +43,7 @@
               [(not (empty? local-scan-results))
               (hash-set! repo-results 'repo_results local-scan-results)])
             (set! github-results (append github-results (list repo-results)))
+            (displayln archive-path)
             (delete-archive archive-path)
             (reset-scan)
             (loop (rest archive-urls))))))
@@ -50,5 +52,7 @@
   (cond [(equal? (output-format) "hash-list")
          (displayln github-results)]
         [(equal? (output-format) "json")
-         (printf "~a\n" (format-json github-results))]))
+         (printf "~a\n" (format-json github-results))])
+  (delete-directory/files (string-append (path->string (get-bogu-dir-path)) "/archives")))
+  
 
