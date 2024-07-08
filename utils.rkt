@@ -51,6 +51,9 @@
       (string-contains? file-contents "client_id")) #t]
     [else #f]))
 
+(define (get-bogu-dir-path)
+  (build-path (find-system-path 'home-dir) ".bogu"))
+
 ;; Checks Shannon entropy of a string
 (define (shannon str)
   (define len (string-length str))
